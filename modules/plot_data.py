@@ -5,19 +5,20 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 
 #Could generalise it but would then need more parameters for axis titles, colour etc.
-def plot_data_timeseries(data):
+def plot_data_timeseries(data, figure_width, figure_height):
     #Plots a single data series in a line chart
 
     #separate the dates and the data from FRED JSON
-    dates = datetime.strptime(row[0], "%Y-%m-%d")
+    dates = [datetime.strptime(row[0], "%Y-%m-%d") for row in data]
+    yields = [row[1] for row in data]
 
-    for row in data:
-        yields = [row[1] for row in data]
+    #for i in range(10):                    #Debugging
+    #    print(dates[i], yields[i])
 
     #create the plot
-    plt.figure(figsize=(10,5))          #10"x5"
-    plt.plot(dates, yields, label="10Y Treasury Yield", colour="blue")
-    plot.title("10y UST yields over time")
+    plt.figure(figsize=(figure_width,figure_height))          #10"x5"
+    plt.plot(dates, yields, label="10Y Treasury Yield", color="blue")   #Note: Stupid american spellings
+    plt.title("10y UST yields over time")
     plt.xlabel("Date")
     plt.ylabel("Yield (%)")
     plt.grid(True)
