@@ -5,14 +5,13 @@ import os
 import requests
 from datetime import datetime           #Timestamp for saved fi
 
-#Note to self - This could be generalised by having the series ID passed to the function.
-def download_us_yields(API_key):
-    #Downloads historical 10y UST yields from FRED to local
+def download_FRED_data(API_key, series_id):
+    #Downloads historical timeseries from FRED to local
 
-    #BEFORE doing any of this I should check if the most recent data is already in
+    #Note to self: I should check if the most recent data is already in the data storage folder
     URL_base = "https://api.stlouisfed.org"
     URL_endpoint = "/fred/series/observations"
-    series_id = "DGS10"
+    #series_id = "DGS10"
     params = {
         "api_key": API_key,
         'series_id': series_id,
@@ -28,15 +27,26 @@ def download_us_yields(API_key):
 
     #Create a file with today's date
     today = datetime.today().strftime("%Y-%m-%d")
-    filename = f"data/{series_id}_{today}.csv"
+    filename = f"data/{series_id}_{today}.json"
 
     #Request the data
-    response = requests.get(URL, params=params)
-    response.raise_for_status()                 #This creates an error if the download fails
+    #Added more error handling
+    try:
+        response = requests.get(URL, params=params)
+        response.raise_for_status()
+        #Write the file
+        with open(filename, "w", encoding="utf-8") as f:
+            f.write(response.text)
 
-    #Write the file
-    with open(filename, "w", encoding="utf-8") as f:
-        f.write(response.text)
-
-    print(f"JSON data downloaded and saved as {filename}")
-    return filename
+        print(f"JSON data downloaded and saved as {filename}")
+        return filename
+    except requests.exceptions.HTTPError as err:
+        if err.response.status_code ==400:
+            print(f"Error code 400: Bad request at {URL}")
+            print(f"That series ID was not recognised.")
+        else:
+            print(f"HTTP error occurred at {URL}")
+            print(f"{e} - Status code: {e.response.status_code}")
+    except requests.exceptions.RequestException as e:
+            print(f"Unknown error occurred: {e}")
+    return None
