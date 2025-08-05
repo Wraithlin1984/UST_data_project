@@ -16,7 +16,7 @@ def bucket_timeseries(timeseries_data, bucket_size=0.25):
             bucket = math.floor(value / bucket_size)*bucket_size
             buckets.append(round(bucket,2))
     unsorted_counter = Counter(buckets)
-    print(sorted(unsorted_counter.items(), key = lambda x:x[0]))                 #Debugging
+    #print(sorted(unsorted_counter.items(), key = lambda x:x[0]))                 #Debugging
 
     return sorted(unsorted_counter.items(), key = lambda x:x[0])
 

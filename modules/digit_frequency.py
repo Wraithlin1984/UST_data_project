@@ -20,6 +20,6 @@ def analyse_digit_frequency(dataseries):
                     digits.append(int(char))    #Add one to the counter
     unsorted_data = Counter(digits)
 
-    print(sorted(unsorted_data.items(), key=lambda x:x[0]))         #DEBUGGING
+    #print(sorted(unsorted_data.items(), key=lambda x:x[0]))         #DEBUGGING
 
     return Counter(digits)

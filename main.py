@@ -40,7 +40,7 @@ def main():
     #Plot histotgrams
     plot_histogram(yields_distribution, "10y Treasury yields (Frequency)", "Yield", "Count",
                    "green", bucket_size)
-    input("Histogram of 10y UST yields. Press enter to continue...")
+    input("Histogram of values. Press enter to continue...")
 
     #Histogram 2
     plot_histogram(digit_distribution, "Digits within yields (2dp)", "Digit", "Count",
