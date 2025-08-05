@@ -1,5 +1,6 @@
 #The Main
 
+from modules.import_api_key import import_api_key
 from modules.fetch_data import download_us_yields
 from modules.ingest_data import load_data_from_json
 from modules.plot_data import plot_data_timeseries
@@ -8,8 +9,11 @@ from modules.frequency_distribution import plot_histogram
 from modules.digit_frequency import analyse_digit_frequency
 
 def main():
+    #Grab my FRED API key from local
+    API_key = import_api_key()
+
     #Download, save as local, and ingest the data
-    json_file = download_us_yields("f889f763982c5a97c15dd61f752b7d15")
+    json_file = download_us_yields(API_key)
     print("File saved successfully to: {json_file}")
 
     dataseries = load_data_from_json(json_file)
